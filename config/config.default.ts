@@ -1,4 +1,5 @@
 import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
+import configMysqlCustom from './config.mysql.custom';
 
 export default (appInfo: EggAppInfo) => {
   const config = {} as PowerPartial<EggAppConfig>;
@@ -17,6 +18,21 @@ export default (appInfo: EggAppInfo) => {
     },
     domainWhiteList: [ '*' ],
   };
+
+  /**
+   * client: {
+   *  host,
+   *  port',
+   *  user,
+   *  password,
+   *  database,
+   * },
+   * app: true, // 是否加载到 app 上，默认开启
+   * agent: false, // 是否加载到 agent 上，默认关闭
+   */
+  if (configMysqlCustom) {
+    config.mysql = configMysqlCustom;
+  }
 
   // add your special config in here
   const bizConfig = {
