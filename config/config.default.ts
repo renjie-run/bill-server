@@ -1,5 +1,10 @@
 import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
-import configMysqlCustom from './config.mysql.custom';
+let configMysqlCustom;
+try {
+  configMysqlCustom = require('./config.mysql.custom');
+} catch (err) {
+  configMysqlCustom = null;
+}
 
 export default (appInfo: EggAppInfo) => {
   const config = {} as PowerPartial<EggAppConfig>;
