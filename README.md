@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/renjie-run/bill-server/branch/main/graph/badge.svg?token=89CPYF9RVI)](https://codecov.io/gh/renjie-run/bill-server)
+
 # hackernews-async-ts
 
 [Hacker News](https://news.ycombinator.com/) showcase using typescript && egg
