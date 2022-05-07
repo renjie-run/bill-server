@@ -47,6 +47,47 @@ class UserController extends BaseController {
     };
   }
 
+  async login() {
+    const { ctx, service } = this;
+    const { username, password } = ctx.request.body;
+    if (!username || !password) {
+      ctx.status = 400;
+      ctx.body = {
+        err_code: 1002,
+        err_msg: 'missing params',
+        data: null,
+      };
+      return;
+    }
+    const user = await service.user.getUserByName(username);
+    if (!user) {
+      ctx.status = 400;
+      ctx.body = {
+        err_code: 2001,
+        err_msg: 'user not exist',
+        data: null,
+      };
+      return;
+    }
+    if (user.password !== password) {
+      ctx.status = 400;
+      ctx.body = {
+        err_code: 2002,
+        err_msg: 'wrong username or password',
+        data: null,
+      };
+      return;
+    }
+    const token = service.token.generateToken({ id: user.id, username });
+    ctx.status = 200;
+    ctx.body = {
+      err_code: 0,
+      err_msg: null,
+      data: {
+        token,
+      },
+    };
+  }
 }
 
 module.exports = UserController;
