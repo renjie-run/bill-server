@@ -2,6 +2,13 @@
 
 'use strict';
 
+let mysql;
+try {
+  mysql = require('./config.custom.mysql');
+} catch (err) {
+  mysql = {};
+}
+
 /**
  * @param {Egg.EggAppInfo} appInfo app info
  */
@@ -22,6 +29,16 @@ module.exports = appInfo => {
   const userConfig = {
     // myAppName: 'egg',
   };
+
+  config.security = {
+    csrf: {
+      enable: false,
+      ignoreJSON: true,
+    },
+    domainWhiteList: [ '*' ],
+  };
+
+  config.mysql = mysql;
 
   return {
     ...config,
