@@ -3,10 +3,17 @@
 'use strict';
 
 let mysql;
+let jwt;
 try {
   mysql = require('./config.custom.mysql');
 } catch (err) {
   mysql = {};
+}
+
+try {
+  jwt = require('./config.custom.jwt');
+} catch (err) {
+  jwt = {};
 }
 
 /**
@@ -39,6 +46,7 @@ module.exports = appInfo => {
   };
 
   config.mysql = mysql;
+  config.jwt = jwt;
 
   return {
     ...config,
