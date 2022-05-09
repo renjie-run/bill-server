@@ -26,6 +26,14 @@ class UserService extends BaseService {
       return null;
     }
   }
+
+  async modifyUser(newUser) {
+    try {
+      return this.app.mysql.update(TABLE_NAME, newUser);
+    } catch (err) {
+      return null;
+    }
+  }
 }
 
 module.exports = UserService;
