@@ -14,7 +14,7 @@
 ### 通用
 状态码|错误信息                  |含义      |status code
 0    |None                     |成功的CRUD|200
-999  |unknown error            |未知错误  |400
+999  |unknown error            |未知错误  |500
 1000 |uri not found            |资源不存在 |404
 1001 |missing params           |参数不全  |400
 1002 |unauthorized             |未授权    |401
@@ -25,3 +25,4 @@
 2000 |user already exist        |用户已存在     |400
 2001 |user not exist            |用户不存在     |400
 2002 |wrong username or password|用户名或密码错误|400
+2003 |password cannot be empty  |密码不能为空   |400
