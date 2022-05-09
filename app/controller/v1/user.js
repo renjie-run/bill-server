@@ -88,6 +88,34 @@ class UserController extends BaseController {
       },
     };
   }
+
+  async author() {
+    const { ctx, app, service } = this;
+    const { authorization } = ctx.request.header;
+    const decode = app.jwt.verify(authorization, app.config.jwt.secret);
+    const user = await service.user.getUserByName(decode.username);
+    if (!user) {
+      ctx.status = 400;
+      ctx.body = {
+        err_code: 2001,
+        err_msg: 'user not exist',
+        data: null,
+      };
+      return;
+    }
+    const { id, username, signature, avatar } = user;
+    ctx.status = 200;
+    ctx.body = {
+      err_code: 0,
+      err_msg: null,
+      data: {
+        id,
+        username,
+        signature,
+        avatar,
+      },
+    };
+  }
 }
 
 module.exports = UserController;
