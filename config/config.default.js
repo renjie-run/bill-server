@@ -34,7 +34,7 @@ module.exports = appInfo => {
 
   // add your user config here
   const userConfig = {
-    // myAppName: 'egg',
+    uploadDir: 'app/public/upload',
   };
 
   config.security = {
@@ -45,8 +45,17 @@ module.exports = appInfo => {
     domainWhiteList: [ '*' ],
   };
 
+  config.cors = {
+    origin: '*', // 允许所有跨域访问
+    credentials: true, // 允许 Cookie 跨域跨域
+    allowMethods: 'GET,POST,PUT,DELETE,HEAD,PATCH',
+  };
+
   config.mysql = mysql;
   config.jwt = jwt;
+  config.multipart = {
+    mode: 'file', // file | stream
+  };
 
   return {
     ...config,
