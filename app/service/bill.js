@@ -13,6 +13,14 @@ class BillService extends BaseService {
       return null;
     }
   }
+
+  async getBillById({ bill_id, user_id }) {
+    try {
+      return this.app.mysql.get(TABLE_NAME, { id: bill_id, user_id });
+    } catch (err) {
+      return null;
+    }
+  }
 }
 
 module.exports = BillService;

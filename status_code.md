@@ -28,3 +28,8 @@
 2001 |user not exist            |用户不存在     |400
 2002 |wrong username or password|用户名或密码错误|400
 2003 |password cannot be empty  |密码不能为空   |400
+
+### bill 相关
+状态码|错误信息                   |含义          |status code
+-----|--------------------------|-------------|-----------
+3004 |bill not exist            |账单不存在     |400
