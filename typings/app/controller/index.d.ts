@@ -3,6 +3,7 @@
 
 import 'egg';
 import ExportV1Base = require('../../../app/controller/v1/base');
+import ExportV1Bill = require('../../../app/controller/v1/bill');
 import ExportV1Upload = require('../../../app/controller/v1/upload');
 import ExportV1User = require('../../../app/controller/v1/user');
 
@@ -10,6 +11,7 @@ declare module 'egg' {
   interface IController {
     v1: {
       base: ExportV1Base;
+      bill: ExportV1Bill;
       upload: ExportV1Upload;
       user: ExportV1User;
     }
