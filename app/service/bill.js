@@ -21,6 +21,14 @@ class BillService extends BaseService {
       return null;
     }
   }
+
+  async update(newBill) {
+    try {
+      return this.app.mysql.update(TABLE_NAME, newBill);
+    } catch (err) {
+      return null;
+    }
+  }
 }
 
 module.exports = BillService;
