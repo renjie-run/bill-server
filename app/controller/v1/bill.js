@@ -177,6 +177,61 @@ class BillController extends BaseController {
       },
     };
   }
+
+  async delete() {
+    const { ctx, app, service, config } = this;
+    const { authorization } = ctx.request.header;
+    const { id } = ctx.request.body;
+    if (!id) {
+      ctx.status = 400;
+      ctx.body = {
+        err_code: 1001,
+        err_msg: 'missing params',
+        data: null,
+      };
+      return;
+    }
+    const decode = app.jwt.verify(authorization, config.jwt.secret);
+    const bill = await service.bill.getBillById({ bill_id: id, user_id: decode.id });
+    if (!bill) {
+      ctx.status = 400;
+      ctx.body = {
+        err_code: 3004,
+        err_msg: 'bill not exist',
+        data: null,
+      };
+      return;
+    }
+    const newBill = { ...bill, delete_time: dayjs().format('YYYY-MM-DDTHH:mm:ss.SSSZ') };
+    const res = await service.bill.update(newBill);
+    if (!res || res.affectedRows !== 1) {
+      ctx.status = 500;
+      ctx.body = {
+        err_code: 999,
+        err_msg: 'unknown error',
+        data: null,
+      };
+      return;
+    }
+    ctx.status = 200;
+    ctx.body = {
+      err_code: 0,
+      err_msg: null,
+      data: {
+        id: newBill.id,
+        pay_type: newBill.pay_type,
+        amount: newBill.amount,
+        date: newBill.date,
+        type_id: newBill.type_id,
+        type_name: newBill.type_name,
+        user_id: newBill.user_id,
+        remark: newBill.remark,
+        create_time: newBill.create_time,
+        update_time: newBill.update_time,
+        delete_time: newBill.delete_time,
+      },
+    };
+  }
 }
 
 module.exports = BillController;

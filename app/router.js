@@ -14,4 +14,5 @@ module.exports = app => {
   router.post('/api/v1/bill', _jwt, controller.v1.bill.addBill);
   router.get('/api/v1/bill/:id', _jwt, controller.v1.bill.getBillById);
   router.put('/api/v1/bill', _jwt, controller.v1.bill.update);
+  router.delete('/api/v1/bill', _jwt, controller.v1.bill.delete);
 };
