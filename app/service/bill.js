@@ -29,6 +29,19 @@ class BillService extends BaseService {
       return null;
     }
   }
+
+  async list({ user_id, type_id, start_date, end_date }) {
+    try {
+      let sql = `SELECT * FROM \`${TABLE_NAME}\` WHERE user_id = ${user_id} AND create_time >= '${start_date}' AND create_time <= '${end_date}'`;
+      if (type_id) {
+        sql += ` type_id = ${type_id}`;
+      }
+      sql += ' ORDER BY `create_time` DESC';
+      return this.app.mysql.query(sql);
+    } catch (err) {
+      return null;
+    }
+  }
 }
 
 module.exports = BillService;

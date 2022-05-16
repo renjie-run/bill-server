@@ -11,6 +11,7 @@ module.exports = app => {
   router.post('/api/v1/auth-token', _jwt, controller.v1.user.authorToken);
   router.put('/api/v1/user', _jwt, controller.v1.user.modifyUserInfo);
   router.post('/api/v1/upload', controller.v1.upload.upload);
+  router.get('/api/v1/bill/statistic', _jwt, controller.v1.bill.statistic);
   router.post('/api/v1/bill', _jwt, controller.v1.bill.addBill);
   router.get('/api/v1/bill/:id', _jwt, controller.v1.bill.getBillById);
   router.put('/api/v1/bill', _jwt, controller.v1.bill.update);

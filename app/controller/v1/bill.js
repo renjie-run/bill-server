@@ -232,6 +232,81 @@ class BillController extends BaseController {
       },
     };
   }
+
+  async statistic() {
+    const { ctx, app, service, config } = this;
+    const { date, type_id, page = 1, page_size = 5 } = ctx.query;
+    if (!date || !page || !page_size) {
+      ctx.status = 400;
+      ctx.body = {
+        err_code: 1001,
+        err_msg: 'missing params',
+        data: null,
+      };
+      return;
+    }
+    const { authorization } = ctx.request.header;
+    const decode = app.jwt.verify(authorization, config.jwt.secret);
+    const { id: user_id } = decode;
+    const start_date = dayjs(date).startOf('month').format('YYYY-MM-DD');
+    const end_date = dayjs(date).endOf('month').format('YYYY-MM-DD');
+    const bills = await service.bill.list({
+      user_id,
+      start_date,
+      end_date,
+      type_id,
+    });
+    if (!bills) {
+      ctx.status = 500;
+      ctx.body = {
+        err_code: 999,
+        err_msg: 'unknown error',
+        data: null,
+      };
+      return;
+    }
+    let total_expense = 0;
+    let total_income = 0;
+    bills.forEach(bill => {
+      const { pay_type, amount } = bill;
+      if (pay_type === 1) {
+        total_expense += Number(amount);
+      } else {
+        total_income += Number(amount);
+      }
+    });
+    let data_set = bills.reduce((curr, bill) => {
+      const { create_time } = bill;
+      const yearMonth = dayjs(create_time).format('YYYY-MM');
+      const index = curr.findIndex(item => item.date === yearMonth);
+      if (index > -1) {
+        curr[index].bills.push(bill);
+      } else {
+        curr.push({
+          date: yearMonth,
+          bills: [ bill ],
+        });
+      }
+      return curr;
+    }, []);
+    const total_page = Math.ceil(data_set.length / page_size);
+    data_set = data_set.slice((page - 1) * page_size, page * page_size);
+    ctx.status = 200;
+    ctx.body = {
+      err_code: 0,
+      err_msg: null,
+      data: {
+        total_expense,
+        total_income,
+        total_page,
+        date,
+        user_id,
+        type_id,
+        page_size,
+        data_set,
+      },
+    };
+  }
 }
 
 module.exports = BillController;
